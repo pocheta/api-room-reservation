@@ -1,0 +1,23 @@
+[global]
+  checkNewVersion = false
+  sendAnonymousUsage = false
+
+[log]
+  level = "ERROR"
+  format = "json"
+
+[api]
+  debug = false
+  insecure = true
+  dashboard = true
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.traefik]
+    address = ":8080"
+
+[providers]
+  [providers.docker]
+    exposedByDefault = false
+    network = "traefik_public_network"
