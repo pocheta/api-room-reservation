@@ -3,10 +3,9 @@ import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { AppModule } from './app.module'
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter'
 
-function assertEnv(key: string): string {
+function assertEnv(key: string): void {
 	const value: string | undefined = process.env[key]
 	if (!value) throw new Error(`Missing required environment variable: ${key}`)
-	return value
 }
 
 async function bootstrap(): Promise<void> {

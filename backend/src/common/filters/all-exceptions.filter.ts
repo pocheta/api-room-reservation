@@ -10,7 +10,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
 		if (exception instanceof HttpException) {
 			const status: number = exception.getStatus()
-			const body: string | { message: string | string[] } = exception.getResponse() as string | { message: string | string[] }
+			const body: string | { message: string | string[] } = exception.getResponse() as
+				| string
+				| { message: string | string[] }
 
 			response.status(status).json({
 				statusCode: status,
