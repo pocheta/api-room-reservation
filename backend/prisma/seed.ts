@@ -7,10 +7,13 @@ const adapter: PrismaPg = new PrismaPg({ connectionString: process.env.DATABASE_
 const prisma: PrismaClient = new PrismaClient({ adapter })
 
 
-async function insertUser(password: string): Promise<User> {
-    return prisma.user.create({
-        data: {
-            email: faker.internet.email().toLowerCase(),
+async function insertUser(index: number, password: string): Promise<User> {
+    const email: string = `user${index}@seed.local`
+    return prisma.user.upsert({
+        where: { email },
+        update: {},
+        create: {
+            email,
             password,
             firstname: faker.person.firstName(),
             lastname: faker.person.lastName(),
@@ -71,7 +74,7 @@ async function main(): Promise<void> {
     const users: User[] = await Promise.all(
 		Array.from({ length: 5 }, async (_: unknown, index: number): Promise<User> => {
 			const password: string = await hash(`password${index}`, 10)
-			return insertUser(password)
+			return insertUser(index, password)
 		}),
 	)
 
