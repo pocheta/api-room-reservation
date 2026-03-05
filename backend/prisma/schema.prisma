@@ -1,8 +1,57 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  password     String
+  firstname    String
+  lastname     String
+  reservations Reservation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("users")
+}
+
+model Room {
+  id           String        @id @default(uuid())
+  name         String        @unique
+  capacity     Int
+  description  String?
+  reservations Reservation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("rooms")
+}
+
+model Reservation {
+  id        String            @id @default(uuid())
+  title     String
+  startTime DateTime
+  endTime   DateTime
+  status    ReservationStatus @default(CONFIRMED)
+  userId    String
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade, map: "fk_reservations_user_id")
+  roomId    String
+  room      Room              @relation(fields: [roomId], references: [id], onDelete: Restrict, map: "fk_reservations_room_id")
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([userId, startTime])
+  @@index([roomId, startTime, endTime])
+  @@index([startTime, endTime])
+  @@map("reservations")
+}
+
+enum ReservationStatus {
+  CONFIRMED
+  CANCELLED
 }
