@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common'
-import { ReservationResponse } from '@/types'
+import { ReservationResponse, RoomReservationCount } from '@/types'
 import { Prisma, Reservation, ReservationStatus } from '@/prisma/client'
 import { PrismaService } from '../prisma/prisma.service'
 import { RoomsService } from '@/rooms/rooms.service'
@@ -55,8 +55,38 @@ export class ReservationsService {
 		return ReservationMapper.toResponse(reservation)
 	}
 
+	findConfirmedInPeriod(start: Date, end: Date): Promise<Reservation[]> {
+		return this.prisma.reservation.findMany({
+			where: {
+				status: ReservationStatus.CONFIRMED,
+				startTime: { lt: end },
+				endTime: { gt: start },
+			},
+		})
+	}
+
+	findAllConfirmed(): Promise<Reservation[]> {
+		return this.prisma.reservation.findMany({
+			where: { status: ReservationStatus.CONFIRMED },
+		})
+	}
+
+	async findConfirmedGroupedByRoom(limit: number): Promise<RoomReservationCount[]> {
+		type GroupRow = { roomId: string; _count: { id: number } }
+
+		return (
+			await this.prisma.reservation.groupBy({
+				by: ['roomId'],
+				where: { status: ReservationStatus.CONFIRMED },
+				_count: { id: true },
+				orderBy: { _count: { id: 'desc' } },
+				take: limit,
+			})
+		).map((g: GroupRow): RoomReservationCount => ({ roomId: g.roomId, reservationCount: g._count.id }))
+	}
+
 	async remove(userId: string, id: string): Promise<void> {
-		await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+		await this.prisma.$transaction(async (tx: Prisma.TransactionClient): Promise<void> => {
 			await this.validateMutation(tx, userId, id)
 			await tx.reservation.update({
 				where: { id },
