@@ -1,16 +1,19 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
-import { RoomSummary } from '@/types'
+import { Room } from '@/prisma/client'
 import { PrismaService } from '../prisma/prisma.service'
 
 @Injectable()
 export class RoomsService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	findAll(): Promise<RoomSummary[]> {
+	findAll(): Promise<Room[]> {
 		return this.prisma.room.findMany({
-			select: { name: true, capacity: true, description: true },
 			orderBy: { name: 'asc' },
 		})
+	}
+
+	findRoomsByIds(ids: string[]): Promise<Room[]> {
+		return this.prisma.room.findMany({ where: { id: { in: ids } } })
 	}
 
 	async resolveId(roomId?: string, roomName?: string): Promise<string> {
