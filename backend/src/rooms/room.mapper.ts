@@ -1,5 +1,5 @@
 import { Room } from '@/prisma/client'
-import { RoomSummary } from '@/types'
+import type { RoomSummary } from '@/types'
 
 export class RoomMapper {
 	static toSummary(room: Room): RoomSummary {

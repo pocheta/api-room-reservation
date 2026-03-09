@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common'
-import { ReservationResponse, RoomReservationCount } from '@/types'
+import type { ReservationResponse, RoomReservationCount } from '@/types'
 import { Prisma, Reservation, ReservationStatus } from '@/prisma/client'
 import { PrismaService } from '../prisma/prisma.service'
 import { RoomsService } from '@/rooms/rooms.service'

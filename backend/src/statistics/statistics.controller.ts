@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard'
-import { AverageDurationStats, OccupancyStats, TopRoom } from '@/types'
+import type { AverageDurationStats, OccupancyStats, TopRoom } from '@/types'
 import { StatisticsService } from './statistics.service'
 import { OccupancyQueryDto } from './dto/occupancy-query.dto'
 import { TopRoomsQueryDto } from './dto/top-rooms-query.dto'

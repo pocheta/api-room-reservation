@@ -2,7 +2,7 @@ import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post, Use
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard'
 import { CurrentUser } from '@/common/decorators/current-user.decorator'
-import { JwtPayload, ReservationResponse } from '@/types'
+import type { JwtPayload, ReservationResponse } from '@/types'
 import { ReservationsService } from './reservations.service'
 import { CreateReservationDto } from './dto/create-reservation.dto'
 import { UpdateReservationDto } from './dto/update-reservation.dto'

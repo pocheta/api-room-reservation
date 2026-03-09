@@ -131,9 +131,9 @@ describe('ReservationsService', () => {
 		it('throws ForbiddenException when user is not the owner', async () => {
 			mockTx.reservation.findUnique.mockResolvedValue({ ...mockReservation, userId: 'other-user' })
 
-			await expect(
-				service.update('user-uuid', 'res-uuid', { title: 'Updated' }),
-			).rejects.toThrow(ForbiddenException)
+			await expect(service.update('user-uuid', 'res-uuid', { title: 'Updated' })).rejects.toThrow(
+				ForbiddenException,
+			)
 		})
 
 		it('throws UnprocessableEntityException when reservation is already cancelled', async () => {
@@ -142,17 +142,17 @@ describe('ReservationsService', () => {
 				status: ReservationStatus.CANCELLED,
 			})
 
-			await expect(
-				service.update('user-uuid', 'res-uuid', { title: 'Updated' }),
-			).rejects.toThrow(UnprocessableEntityException)
+			await expect(service.update('user-uuid', 'res-uuid', { title: 'Updated' })).rejects.toThrow(
+				UnprocessableEntityException,
+			)
 		})
 
 		it('throws NotFoundException when reservation does not exist', async () => {
 			mockTx.reservation.findUnique.mockResolvedValue(null)
 
-			await expect(
-				service.update('user-uuid', 'res-uuid', { title: 'Updated' }),
-			).rejects.toThrow(NotFoundException)
+			await expect(service.update('user-uuid', 'res-uuid', { title: 'Updated' })).rejects.toThrow(
+				NotFoundException,
+			)
 		})
 	})
 
