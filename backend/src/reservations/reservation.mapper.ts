@@ -1,5 +1,5 @@
 import { Reservation } from '@/prisma/client'
-import { ReservationResponse } from '@/types'
+import type { ReservationResponse } from '@/types'
 
 export class ReservationMapper {
 	static toResponse(reservation: Reservation): ReservationResponse {

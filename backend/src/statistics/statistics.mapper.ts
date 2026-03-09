@@ -1,5 +1,5 @@
 import { Room } from '@/prisma/client'
-import { RoomReservationCount, TopRoom } from '@/types'
+import type { RoomReservationCount, TopRoom } from '@/types'
 
 export class StatisticsMapper {
 	static toTopRoom(grouped: RoomReservationCount, roomMap: Map<string, string>, rank: number): TopRoom {

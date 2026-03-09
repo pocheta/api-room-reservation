@@ -15,7 +15,11 @@ export class CreateReservationDto {
 	@IsDateString()
 	endTime: string
 
-	@ApiProperty({ example: 'c82f5bc5-cd41-4273-b0aa-cdf93e2042b6', required: false, description: 'Required if roomName is not provided' })
+	@ApiProperty({
+		example: 'c82f5bc5-cd41-4273-b0aa-cdf93e2042b6',
+		required: false,
+		description: 'Required if roomName is not provided',
+	})
 	@ValidateIf((o: CreateReservationDto) => !o.roomName)
 	@IsUUID()
 	roomId?: string
